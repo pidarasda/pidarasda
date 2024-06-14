@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+  <meta charset="UTF-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <title>CodePen - QNA q/952133</title>
+  <link rel="stylesheet" href="roulette/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200&display=swap" rel="stylesheet">
+</head>
+<body>
+<audio src="roulette/sound.mp3" autoplay="autoplay"></audio>
+<div class="div2" id="ruletka">
+<div class = "firstline">
+  <div class = "bukvi">
+  <p id="username" class="name">1234567890123456789012345678901234567890</p>
+  </div>
+  
+  <div class = "gradient-border bukvi" id="countRichBox">
+    <p id="countRich" class="name">x3</p>
+  </div>
+  <div class = "bukvi" id="countBox">
+    <p id="count" class="name">x3</p>
+  </div>
+</div>
+    <div class="div">
+      <div class="ruletka">
+          <img id="img" class="poloska" src="/roulette/png/1.png" height="128" width="128"/>
+        <canvas></canvas>
+      </div>
+  </div>
+  <div class="dropBox" id="dropBox1">
+    <div class = "bukvi" id = "cvet1">
+    <p id="drop1" class="name">prise</p>
+	</div>
+  </div>
+  <div class="dropBox" id="dropBox2">
+    <div class = "bukvi" id = "cvet2">
+    <p id="drop2" class="name">prise</p>
+	</div>
+  </div>
+  <div class="dropBox" id="dropBox3">
+    <div class = "bukvi" id = "cvet3">
+    <p id="drop3" class="name">prise</p>
+	</div>
+  </div>
+</div>
+
+<!-- partial -->
+  <script  src="roulette/script.js"></script>
+
+</body>
+</html>

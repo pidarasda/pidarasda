@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="table/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:ital,wght@1,700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="fullscreen-bg">
+    <video loop="" muted="" autoplay="" class="fullscreen-bg__video">
+    <source src="/table/video.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="bar ">
+    <p class="tg">t.me/needx4n4x</p>
+    <div class="volume">
+      <input id="range" min="0" max="100" value="0" type="range" class="range blue"/>
+    </div>
+  </div>
+  <center>
+    <div class="table">
+      <table>
+        <tbody id="table">
+    </tbody>
+      </table>
+    </div>
+  </center>
+  <div class="backmess">
+    <div class="mess">
+      <div class="profile">
+        <div class="">
+            <a onclick="hideMes()" style="float:right;" class="close" id="close">закрыть</a>
+            <p id="username">Username</p>
+        </div>
+      </div>
+      <p class="message" id="message">messagemessagemessageme ssagemessa gemes sagemessag emessagem ess agemess agemes sagemessa gemess agemess agemessage</p>
+    </div>
+  </div>
+  <script type="text/javascript">
+    var audio = new Audio('table/audio.mp3');
+    audio.loop = true;
+    var range = document.getElementById('range');
+    var first = true;
+    range.onchange = function(){
+      if(first == true) audio.play();
+        first = false;
+        audio.volume = this.value/100;
+
+    }
+    function httpGet(theUrl)
+    {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false ); // false for synchronous request
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+    }
+    var t = httpGet('/gettable');
+    var obj1 = JSON.parse(t);
+    for(let i = 0; i < obj1.length; i++){
+      PushTable(obj1[i]);
+    }
+    function showMes(id)
+    {
+      var obj;
+      var username = document.querySelector('#username');
+      var message = document.querySelector('#message');
+      for(let i = 0; i < obj1.length; i++){
+        if(obj1[i].id == id){
+          obj = obj1[i];
+        }
+      }
+      username.textContent = obj.username;
+      message.textContent = obj.mes;
+      document.querySelector('.backmess').style.visibility = 'visible';
+    }
+    const xhr = new XMLHttpRequest();
+    function savecheck(obj)
+    {
+      console.log('123');
+      xhr.open("POST", "/setcheck");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      var data = JSON.stringify(obj);
+      console.log(data);
+      xhr.send(data);
+    }
+    function hideMes()
+    {
+      document.querySelector('.backmess').style.visibility = 'hidden';
+    }
+    function deleteDonate(id){
+      document.querySelector('#donate' + id).remove();
+      xhr.open("POST", "/deletedonate");
+      xhr.setRequestHeader("Content-Type", "application/json");
+      var data = JSON.stringify({id: id});
+      xhr.send(data);
+    }
+    function format(num)
+    {
+      if(num.toString().length === 1)
+      {
+        return '0' + num.toString();
+      }
+      return num.toString();
+    }
+    function PushTable(obj)
+    {
+      var table = document.querySelector('#table');
+      var tr = document.createElement('tr');
+      tr.id = 'donate' + obj.id;
+      var data = document.createElement('td');
+      var datap = document.createElement('p');
+      var dateP = new Date(obj.date);
+      var year = document.createElement('p');
+      datap.textContent = format(dateP.getHours()) + ':' + format(dateP.getMinutes()) + ':' + format(dateP.getSeconds());
+      data.appendChild(year);
+      data.appendChild(datap);
+      year.textContent = format(dateP.getDate()) + '.' + format(dateP.getMonth() + 1) + '.' + format(dateP.getFullYear());
+      tr.appendChild(data);
+      var avatar = document.createElement('td');
+      var image = document.createElement('img');
+      image.src = "https://vgraphs.com/images/agents/"+ obj.agent + "-avatar.jpg";
+      image.className = 'img';
+      avatar.className = 'avatar';
+      avatar.appendChild(image);
+      tr.appendChild(avatar);
+      var tdname = document.createElement('td');
+      var name = document.createElement('p');
+      name.className = 'name';
+      name.id = obj.id + 'name';
+      var agent = document.createElement('p');
+      agent.className = 'agent';
+      agent.id = obj.id + 'agent';
+      var div = document.createElement('div');
+      div.className = 'user';
+      name.textContent = obj.username;
+      agent.textContent = obj.agent;
+      div.appendChild(name);
+      div.appendChild(agent);
+      tdname.appendChild(div);
+      tr.appendChild(tdname);
+      var ots = document.createElement('td');
+      ots.className = 'ots';
+      tr.appendChild(ots);
+      var mes = document.createElement('td');
+      var mesp = document.createElement('p');
+      mesp.textContent = obj.gift;
+      mes.appendChild(mesp);
+      tr.appendChild(mes);
+      var price = document.createElement('td');
+      var priceText = document.createElement('p');
+      priceText.textContent = obj.price;
+      price.appendChild(priceText);
+      tr.appendChild(price);
+      var but = document.createElement('td');
+      but.className = 'but';
+      var button7 = document.createElement('a');
+      button7.value = obj.id;
+      button7.onclick = function(){
+        showMes(this.value);
+      }
+      button7.className = 'button7';
+      button7.textContent = 'Сообщение';
+      but.appendChild(button7);
+      tr.appendChild(but);
+      var check = document.createElement('td');
+      var switch1 = document.createElement('label');
+      switch1.className = 'switch';
+      var input = document.createElement('input');
+      input.type = 'checkbox';
+      input.value = obj.id;
+      input.onclick = function(){
+        savecheck({id:this.value});
+      }
+      if(obj.check === '1')
+        input.checked = 'checked';
+      var slider = document.createElement('span');
+      slider.className = 'slider';
+      switch1.appendChild(input);
+      switch1.appendChild(slider);
+      check.appendChild(switch1);
+      tr.appendChild(check);
+      var delete1 = document.createElement('a');
+      delete1.className = 'close';
+      delete1.value = obj.id;
+      delete1.onclick = function(){
+        deleteDonate(this.value);
+      }
+      delete1.textContent = 'X';
+      var tddelete = document.createElement('td');
+      tddelete.appendChild(delete1);
+      tr.appendChild(tddelete);
+      table.appendChild(tr);
+      $(".table").scrollTop($(".table")[0].scrollHeight);
+    }
+    const socket = io('http://localhost:3000');
+    socket.on('connection');
+    socket.on('message', function(msg){
+      var obj = JSON.parse(msg);
+      obj1.push(obj);
+      PushTable(obj);
+    });
+  </script>
+  </body>
+</html>
